@@ -343,7 +343,7 @@ class CSSParser(object):
         i_unicode = '\\\\(?:%s){1,6}\s?' % i_hex
         i_escape = _orRule(i_unicode, '\\\\[ -~\200-\377]')
         # i_nmstart = _orRule('[A-Za-z_]', i_nonascii, i_escape)
-        i_nmstart = _orRule('\-[^0-9]|[A-Za-z_]', i_nonascii,
+        i_nmstart = _orRule(r'\-[^0-9]|[A-Za-z_]', i_nonascii,
                             i_escape) # XXX Added hyphen, http://www.w3.org/TR/CSS21/syndata.html#value-def-identifier
         i_nmchar = _orRule('[-0-9A-Za-z_]', i_nonascii, i_escape)
         i_ident = '((?:%s)(?:%s)*)' % (i_nmstart, i_nmchar)
@@ -355,9 +355,9 @@ class CSSParser(object):
         i_unicodestr2 = r'(\"[^\u0000-\u007f]+\")'
         i_unicodestr = _orRule(i_unicodestr1, i_unicodestr2)
         re_unicodestr = re.compile(i_unicodestr, _reflags)
-        i_element_name = '((?:%s)|\*)' % (i_ident[1:-1],)
+        i_element_name = r'((?:%s)|\*)' % (i_ident[1:-1],)
         re_element_name = re.compile(i_element_name, _reflags)
-        i_namespace_selector = '((?:%s)|\*|)\|(?!=)' % (i_ident[1:-1],)
+        i_namespace_selector = r'((?:%s)|\*|)\|(?!=)' % (i_ident[1:-1],)
         re_namespace_selector = re.compile(i_namespace_selector, _reflags)
         i_class = '\\.' + i_ident
         re_class = re.compile(i_class, _reflags)
@@ -372,7 +372,7 @@ class CSSParser(object):
         i_string2 = '\'((?:%s|\")*)\'' % i_string_content
         i_string = _orRule(i_string1, i_string2)
         re_string = re.compile(i_string, _reflags)
-        i_uri = ('url\\(\s*(?:(?:%s)|((?:%s)+))\s*\\)'
+        i_uri = (r'url\\(\s*(?:(?:%s)|((?:%s)+))\s*\\)'
                  % (i_string, _orRule('[!#$%&*-~]', i_nonascii, i_escape)))
         # XXX For now
         # i_uri = '(url\\(.*?\\))'
@@ -386,15 +386,15 @@ class CSSParser(object):
         i_functionterm = '[-+]?' + i_function
         re_functionterm = re.compile(i_functionterm, _reflags)
         i_unicoderange1 = "(?:U\\+%s{1,6}-%s{1,6})" % (i_hex, i_hex)
-        i_unicoderange2 = "(?:U\\+\?{1,6}|{h}(\?{0,5}|{h}(\?{0,4}|{h}(\?{0,3}|{h}(\?{0,2}|{h}(\??|{h}))))))"
+        i_unicoderange2 = r"(?:U\\+\?{1,6}|{h}(\?{0,5}|{h}(\?{0,4}|{h}(\?{0,3}|{h}(\?{0,2}|{h}(\??|{h}))))))"
         i_unicoderange = i_unicoderange1 # '(%s|%s)' % (i_unicoderange1, i_unicoderange2)
         re_unicoderange = re.compile(i_unicoderange, _reflags)
 
         # i_comment = '(?:\/\*[^*]*\*+([^/*][^*]*\*+)*\/)|(?://.*)'
         # gabriel: only C convention for comments is allowed in CSS
-        i_comment = '(?:\/\*[^*]*\*+([^/*][^*]*\*+)*\/)'
+        i_comment = r'(?:\/\*[^*]*\*+([^/*][^*]*\*+)*\/)'
         re_comment = re.compile(i_comment, _reflags)
-        i_important = '!\s*(important)'
+        i_important = r'!\s*(important)'
         re_important = re.compile(i_important, _reflags)
         del _orRule
 
