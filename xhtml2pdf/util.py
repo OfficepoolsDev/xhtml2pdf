@@ -52,7 +52,7 @@ except ImportError:
 # limitations under the License.
 
 rgb_re = re.compile(
-    "^.*?rgb[a]?[(]([0-9]+).*?([0-9]+).*?([0-9]+)(?:.*?(?:[01]\.(?:[0-9]+)))?[)].*?[ ]*$")
+    r"^.*?rgb[a]?[(]([0-9]+).*?([0-9]+).*?([0-9]+)(?:.*?(?:[01]\.(?:[0-9]+)))?[)].*?[ ]*$")
 
 _reportlab_version = tuple(map(int, reportlab.Version.split('.')))
 if _reportlab_version < (2, 1):
